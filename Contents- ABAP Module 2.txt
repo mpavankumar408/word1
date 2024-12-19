@@ -1,0 +1,310 @@
+                                                            Module Pool Programming
+
+It is also called as Dialog Programming. It is a pool of modules( Screens, Includes, Transaction , etc). A module pool is mainly a pool of screens.
+
+Tabs of a Screen :
+
+Attributes -> It gives the generic information of that screen.
+Element List -> It provids the list of elements available on that screen.
+Flow Logic -> It's purpose is to write the logic.
+
+1) Module Pool Events :
+
+a) PBO( Process Before output) - This event called before displaying a particular screen.
+b) PAI( Process after Input) - This event called after performing some action on a particular screen.
+c) POV( Process on Value Request) - This event called when we click F4 on a field of a screen.
+d) POH( Process on Help Request) - This event called when we click F1( Technical information) on a field of a  screen.
+
+F4 Help -> It tells us what are the various possible values for any Input field.
+F1 Help -> It gives us the technical information of any field/column.
+
+PF-STATUS ->( Personal Functions)
+
+Menu Bar
+Function Keys
+Title Bar
+Application Toolbar
+
+
+Imp Point : A transaction code is required to run a module pool program.
+
+2) Table control : 
+
+Is used to display data in the form of a table.( column and rows)
+
+
+3) SUB Screen : 
+
+a) Create a sub screen area in the normal screen.
+b) Call the subscreen in to sub screen area of main screen.
+
+Syntax : CALL SUBSCREEN SUB INCLUDING SY-REPID '0101'.
+
+Where SUB = Sub screen area name.
+SY-REPID - System variable for Report Id.
+0101 - Sub screen number.
+
+
+4) Tab Strip :
+
+   For Every tab SAP generates a Sub screen.
+
+
+5) AT EXIT-COMMAND -> 
+
+a) The MODULE ... AT EXIT-COMMAND statement is normally used to leave the current screen without the automatic input checks taking place.
+b) Take the Function Type of the Button = 'E'( Exit).
+
+
+6) CHAIN, ENDCHAIN ->
+
+The Purpose of CHAIN , ENDCHAIN is to validate the field input.
+
+Syntax :  CHAIN.
+          FIELD : ( Field1 , Field2 ----) Module ( Module name).
+          ENDCHAIN.
+
+
+Usually in Input screen, whenever the user gives an input and their is no record present, User input is restricted by an error message. 
+This error message disables the input screen & now the user cannot provide correct values in the input field as it is disabled by the message. 
+To over rule this issue, Chain And EndChain Statement comes into the Flow Logic of the screen where the input fields are validated and remain enabled after the 
+error message. 
+
+
+7) Changing the screen fields properties:
+
+In the below example, we set the Input property to zero. 
+
+LOOP at SCREEN.
+IF ( condition).
+SCREEN-INPUT = 0.
+MODIFY SCREEN.
+ENDIF.
+ENDLOOP.
+
+We can change the other properties like - Invisible, Required , OUTPUT etc for the fields by using the above logic.
+
+
+
+
+                                                                 FILE HANDLING
+
+1) GUI_UPLOAD -> To upload the data from Presentation Server.( Pass the file path, It will return the data available at particular path).
+   # -> is recognized as Tab in SAP. If the file is separated by tab, pass # in to the parameter has_field_separator of GUI_UPLOAD Function module.
+
+2) GUI_DOWNLOAD -> To download data to the presentation server.
+
+
+AL11 -> Transaction code for SAP Directories.
+
+
+3) Writing Data to a file of Application Server.   - gui upload
+
+
+OPEN DATASET (File path) FOR OUTPUT IN TEXT MODE ENCODING DEFAULT.
+
+TRANSFER (DATA) to ( File path ) .
+
+CLOSE DATASET.
+
+
+4) Reading Data from a file of Application Server.   - gui download
+
+OPEN DATASET (File path) FOR INPUT IN TEXT MODE ENCODING DEFAULT.
+
+READ DATASET ( FIle path) to variable.
+
+CLOSE DATASET.
+
+
+
+                                                          ABAP OOPS( Object Oriented Programming system).
+
+
+CLASS -> Collection of objects.( Methods, Attributes, Events)
+
+OBJECT -> Instance of a class.
+
+Inheritance -> Creating a Sub class from Parent class.
+The concept of inheritance allows you to derive new classes from existing classes.
+
+Multiple Inheritance is not possible in ABAP, but we can achieve multiple inheritance with the help of interfaces. 
+
+Polymorphism -> Multiple forms.
+
+Polymorphism is a characteristic of being able to assign a different behaviour or value in a subclass, to something that was declared in a parent class. 
+For example, a method can be declared in a parent class, but each subclass can have a different implementation of that method.
+
+Encapsulation -> Binding of data and functions in to a single unit.( Capsule form) -> Data Hiding
+
+
+Types of classes
+
+1) Global classes -> Transaction code : SE24( Class Builder) , We can reuse the global classes.
+
+   a) Usual ABAP Class -> It's purpose is to write the logic.
+   b) Exception class -> It's purpose is to raise and handle the exception.
+   C) Persistence class -> It's purpose is to perform database operations.( INSERT , UPDATE, DELETE)
+   4) Unit Test class  -> It's purpose is to write unit test cases.
+
+2) Local Classes -> Dedicated to one program only. We can create with the help of SE38 transaction code.
+
+
+3) INSTANCE Method -> We need to create a object to call that method.
+
+->  Instance Method
+
+4) STATIC ->  There is no need to create a object.
+
+=>  Static Method.
+
+How to declare Static and Instance Method in Local classes?
+
+Answer : Instance Method : Methods 
+         Static Method   : Method   
+
+
+5) Declaration of object : 
+
+DATA : LO_OBJECT TYPE REF TO ZCL_TEST.
+Where : LO_OBJECT = Object name.
+        ZCL_TEST = Class name.
+
+6) Creation of object :
+
+CREATE OBJECT ( Object name).
+
+
+7) EXCEPTION CLASS -> 
+
+Exception class name should start with a keyword CX.
+
+CX_ROOT - is the global class for all the exceptions.
+
+CX_STATIC_CHECK & CX_DYNAMIC_CHECK.
+
+Use TRY block to raise a exception. Use CATCH blocks to handle a exception.
+
+Syntax to raise a Exception :  
+
+RAISE EXCEPTION TYPE ( Exception Id).
+
+8) FINAL Class->
+
+A final class is that class which can not be inherited. A final class can not have sub-classes.
+
+
+9) ABSTRACT Class->
+
+It is a specical type of class which has at least one abstract method.
+Abstract method is that method which has only definition. There will not be any Implementation.
+We can not create object of ABSTARCT class.
+We can create objects of Sub classes of ABSTRACT class.
+
+10) Interface->
+
+In Interface all methods are public by default.
+In Inteface all methods are abstract methods.( There is only definition).
+
+
+11) Difference between ABSTRACT class and Interface
+
+ABSTRACT CLASS  -> 
+1) In Abstract class, we have at least one abstract method, others can be non-abstract methods.
+2) Method visibilty can be - PUBLIC, PRIVATE, PROTECTED
+3) We need to redefine the abstract method in to sub classes to perform the implemenation in Sub class.
+4) Multiple Inheritance is not possible.
+
+
+INTERFACE -> 
+1) All methods are abstract methods in Interface.
+2) All methods are public.
+3) There is no need to click on the redefine button( redefine button is disabled) , We can write the logic in class by double clicking on the method.
+4) Multiple Inheritance is possible.
+
+
+12) CONSTRUCTORS:
+
+1) Constructor is a special type of method which is executed automatically when a object is created.
+2) They can not be called using call Method statement.
+3) Constructors are methods with a predefined name.
+4) Multiple CONSTRUCTOR and CLASS_CONSTRUCTOR are not allowed with in a class.
+
+
+Types of constructors :
+
+1) CONSTRUCTOR( INSTANCE Constructor)
+   Name of the Method : CONSTRUCTOR.
+   It has only Importing parameters.
+   It can access both static and Instance attributes.
+   It is called every time when a object is created.
+   Used to set default value for a particular instance.
+ 
+2) CLASS_CONSTRUCTOR( STATIC Constructor).
+   Name of the Method : CLASS_CONSTRUCTOR.
+   It does not have any parameters.
+   It can access only static attributes.
+   It is called first time when a object is created.
+
+
+
+                                       ALV -> Application List Viewer or ABAP List Viewer
+
+
+Inbuilt Features of ALV ->
+
+Sorting Data in Ascending or Descending Order.
+Filtering the data.
+Exporting data.
+Sum of Amount Columns.
+
+Steps to Create ALV
+
+
+1) Create a Field catalog.
+   a) USE SAP Function Module( REUSE_ALV_FIELDCATALOG_MERGE) to create a field catalog.
+   b) Manually create a Fieldcatalog.
+
+
+2) Bind Data with Fieldcatalog
+   REUSE_ALV_LIST_DISPLAY
+   REUSE_ALV_GRID_DISPLAY
+
+
+                                                     ALV( OOPS)
+
+1)   Create a Field catalog.
+   a) USE SAP Function Module( LVC_FIELDCATALOG_MERGE) to create a field catalog.
+   b) Manually create a Fieldcatalog.
+
+2) Create a CUSTOM Control( Layout element) on a screen.
+
+3) Create an Object of the Container class( CL_GUI_CUSTOM_CONTAINER)
+
+4) Create an Object of the ALV GRID class( CL_GUI_ALV_GRID) and pass the object of container class in the parent parameter.
+
+5) Use Method :Use ALV GRID class( CL_GUI_ALV_GRID) Method -SET_TABLE_FOR_FIRST_DISPLAY to display the data.
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
