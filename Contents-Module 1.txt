@@ -1,0 +1,839 @@
+                                   Overview of ERP, SAP , ABAP
+
+1) ERP 
+   Enterprise Resource Planning
+   It's purpose is to manage any company functions.
+
+2) SAP
+   SAP - system application and products for data processing.
+   SAP - system application and products in data processing.
+
+3) History of SAP
+   SAP introduced by SAP AG in 1972 at Walldorf.( Germany)
+   SAP is a german based product.
+
+4) Features of SAP
+   a)It is an integration of all functions in to one common software.
+   b)It is a Multi-lingal software.
+   C)It is a user-based license aggrement.( requires user name and password)
+
+5) SAP R/3 Architecture
+   ( 3 - 3 tier architecture , R- Real) - SAP is a real time architecture.
+
+   Layers - Presentation Layer( User Interaction Layer)
+            Application Layer( Writing the programs and applications)
+            Database Layer( To store the data).
+
+6) ABAP/4 -> 
+   Advanced business application programming language.
+   It is a 4th generation language.
+   ABAP lies on application Layer.
+
+7) Modules of SAP->
+   Functional Modules
+   Technical Modules
+
+   Functional Modules -> 
+   SAP SD( Sales & Distribution) 
+   SAP MM( Material Management)
+   SAP PS( Project system)
+   SAP FICO( Finance & Controlling)
+   SAP HR( Human Resources) -> HCM( Human Capital Management)
+   SAP WM( Warehouse Management)
+
+   Techical Modules->
+   SAP BASIS
+   SAP ABAP
+   SAP BIBO( Business Intelligence , Business Objects) -> Reporting tool
+
+
+8) ABAP Workbench -> It is a collection of ABAP tools.
+   SE38 -> Program/Report
+   SE11-> ABAP Dictionary
+   SE37 -> Function Module
+   SE24-> Class
+
+9) Transaction Code -> It is a shortcut to access ABAP workbench tools.
+
+10) /nxxxx - to call Transaction xxxx( override the existing session)
+
+11) /oxxxx - to Call Transaction xxxx in a new Session
+
+12) /NEX -> to close all the sessions
+
+13) /n -> to cancel a session
+
+14) /o- Display an Overview of sessions
+
+12) Any custom objects starts with Z or Y.
+
+13) SAP specific objects - Not starting with Z or Y.
+
+14) User can open a maximum of 6 sessions.
+
+15) SAP system Landscape
+
+   Development - Dedicated for development.
+   Quality -> Testing
+   Production( Live system) - Used by the customer.
+
+ 
+                          
+                           Data Dictionary                         
+
+
+1) Data Dictionary is also called ABAP dictionary or DDIC.
+
+2) Domain -> Tells us about the technical characteristics of a Field/Column.
+    Technical characteristics -> Data type, length.
+
+3) Data Element -> How a field/column will be visible to end user?
+
+4)  Data browser/Table view maintenace options ->
+    Display/Maintenance allowed
+    Display/Maintenance not allowed
+    Display/Maintenance allowed with restrictions
+
+5) MANDT -> Client number of SAP system.
+
+  Tables having MANDT field are called as client dependent tables.
+  Tables does not have MANDT field are called as Client Independent tables. 
+
+6) Data Class -> Tells us in which portion of database the data will get store.
+
+7) Size Category -> A table can store how many number of records.
+
+8)  Types of SAP Data ->
+    Master Data-> Which is accessed very frequenty, but changed very rarely. 
+    Transaction Data-> Which is always changing, number of records are continuously increasing.
+    Configuration Data->Which is accessed very rarely, It changed very rarely. 
+
+9)  TMG( Table Maintenance Generator)
+    Authorization group : &NC&( Any user can maintain the data).
+    Single Step: Only overview screen is applicable
+    Two Step :  Both Overview screen and single screen are applicable.
+
+10) We can maintain data with the help of SM30.
+
+12) Shortcuts -  CTRL + S = SAVE
+                 CTRL + F2 -> Syntax Check
+                 CTRL + F3 -> Activate
+                 CTRL + SHIFT + F10 -> To check the contents of the table.
+
+                                     Primary-Foreign Key Relationship
+
+Primary Key of one table act as a Foreign key in Another table.
+
+( Data/Record/Row/Tuple will be always in the primary key table, It may or may not in the foreign key table)
+
+Pre-requisite - Tables should have a common key.
+
+
+Cardinality -> Number of records in key table, correponds to how many number of records in to secondary/foreign key table.
+
+
+                                             Structures
+Structures ->  Is a collection of fields/columns of different data type or similar data type.
+
+ZEMP -> EID -> N(10)
+        ENAME ->C(40)
+
+ZEMP1 ->EID -> N(10)
+        ESAL ->N(10)
+
+Differnce between table & Structure -> Table has data , Structure does not have any data.
+
+
+Include  -> 1) It is a reusebale Structure.
+            2) We can insert the include structure at any point.
+            3) It is applicable to customer specific tables, It is not applicable to SAP specific tables.
+
+
+Append  -> 1) It is not a reuseable structure.
+           2) It always inserts at the last.
+           3) It is applicable to both customer specific tables and SAP tables.
+
+
+
+                                             Package and Transport Request
+
+Package -> It is a collection/container for the objects.( Table, Data element, Domains, Structures)
+
+Every object needs to be stored in to a package.( Package for local objects : $TMP , local objects can never be transported)
+
+SE80-> To create a package.
+
+
+Transport request -> Medium to transport the objects.
+SE09 -> To create a transport request.( Workbench request)
+
+
+                                                     Types of SAP Database tables
+
+1) Transparent table - Thers is 1:1 relationship between the ABAP dictionary and the database.( One table in ABAP dictionary corresponds to one table in database)
+2) Pooled table - There is N:1 relationship between the ABAP dictionary and the database.( Many tables in ABAP dictionary corresponds to one table in database)
+3) Cluster table - There is N:1 relationship between the ABAP dictionary and the database.( Many tables in ABAP dictionary corresponds to one table in database )
+
+Pooled -> Primary-foreign key relationship is not required.
+Cluster -> Primary-foreign key relationship is mandatory.
+
+Structure of a Pooled table at the database layer - Tabname Varkey Dataln vardata
+Structure of a cluster table at the database layer - Key Pageno Vardata
+
+
+
+                                                       Types of Buffering
+
+Types of Buffering -> Buffer is a temperory storage on the application layer.
+
+1) Single Record buffering -> Single Record will be in the buffer.
+
+Advantage -> It will ocucupy less memory on the application layer.
+Disadvantage -> Number of Iterations will not be reduced between Application layer and database layer, if we are not fetching the same record. 
+
+2) Full Buffering -> Full table will be in the buffer.
+
+
+Advantage -> Number of Iterations between Application and database layer will  be significantly reduced
+Disadvangate -> It will occupy more memory on the application Layer.
+
+A table which stores transaction data should not be opted for Full buffering.
+
+  
+3) Generic area buffering -> It is used to cover a generic area.( Language dependent tables)
+
+The numbers of key field for a generic area buffering is less than the primary keys of the table.
+
+
+                                                             INDEX
+
+1) A Index is created to give the high performance.
+
+Types of Index -> 1)  Primary Index -> Primary Key Will act as a Primary Index.
+                  2)  Secondary Index -> Based upon the requirement , We will create secondary Indexes.
+
+Disadvantage -> Index will occupy space on the database Layer.
+
+
+A Index name is 3 characters long.
+
+Index will store like this - Table name~Index name( Example - ZEMPTABLE~ABC , Where ZEMPTABLE is table name , ABC is Index name).
+
+
+Index for all database systems-> Index will be created on all the databases.
+Index for Selected database systems-> We can choose database, where we want to create the index.
+No database Index-> Index will remove from the database, It's definition will be there.
+
+
+
+
+                                                          Views
+
+
+View -> A view is virtual table.
+        A view is a logical database.
+        It does not have any data.
+
+Differece b/w table and View -> Table has data. View does not have any data.
+
+1) Database View -> It is a collection of one or more database tables.
+
+   Pre-requisite -> Tables should have a Primary foreign key relationship. 
+
+2) Projection View -> It is applicable to single table.
+                       Select those fields which are required.
+
+3) Maintenance View -> It's purpose is to maintain multiple tables.
+
+  Pre-requisite -> Tables should have a Primary foreign key relationship. 
+  MANDT field is required.
+   
+4) Help view -> It is used in search helps.
+
+Q-1 : In which scenario - Database View = Projection View.
+Answer : If we are creating database view for a single table, In that case Database View = Projection View.
+
+
+Q-2 : What is the difference between Database View and Help View?
+Answer : We can display the contents of Database View. We can not display the contents of Help View.
+
+                                          Search Help
+
+
+Search help -> It is also called as F4 help. It's purpose is to display the various 
+               possible values for any Input field.
+
+Types of Search Help -> a) Elementary Search help-> Single search help.
+                        b) Collective search help-> It is a combination of elementary search helps.
+
+Selection Method -> It is the name of he table of name of the view from where we are fetcing the data.
+
+Dialog Type ->
+
+Display values Immediately -> Values will display Immediately.
+Dialog with values restriction -> Before displaying the values, restriction dialog will appaer.
+Dialog depends upon set of values -> If the table has less than 100 values ,It will switch to Display values Immediately.
+                                     If the table has greater than 100,It will switch to Dialog with value restriction. 
+
+
+Search Help Parameter - Field of Search Help.
+
+LPOS -> List position( When values got displayed) 
+
+SPOS->  Screen position( Before displaying the values)
+
+Modify -> It's purpose is to modify the data element.
+
+SDI's -> It's purpose is to make any field in the read only mode.
+
+Default value -> To provide the default values.
+
+Importing -> Input
+
+Exporting -> To Export the values from the list position to the screen fields.
+
+Q-1: What is the pre-requisite for the default value?
+answer : Importing should be unticked.
+
+                                                  
+                                                     ABAP Programming
+
+
+Transaction code : SE38
+
+CTRL + D  - To duplicate a line.
+CTRL + <  -  Comment
+CTRL + >  -  Uncomment
+
+
+Pretty Printer -> for Proper Indentation. Makes the code easy to read.
+
+
+                                                Parameters & Select-options
+
+Parameters - Accepts Single Input.
+
+Select-options -  We can pass range of values.
+                  Low, High, Multiple Selection 
+
+Select options is a range table.
+
+Obligatory -To make parameters or select-options mandatory.
+No-Intervals - To remove the high range of Select Option.
+No Extension - Used to remove the multiple selection option.
+
+
+For Parameters, Use = in the where condition.
+For Select-options, Use IN in the where condition
+
+Q-1 : What are the 4 parts of a Select-option?
+Answer : SIGN(1) - I/E( Include, Exclude)
+         OPTION(2) -> Relational operator( EQ, BT-------)
+         LOW - Low value
+         HIGH - High value
+
+Q-2 : If we are passing only a low value in Select-option, what is the relational operator?
+Answer : EQ
+
+
+Q-3 : If we are passing only a low value and High value in Select-option, what is the relational operator?
+Answer : BT
+
+
+
+
+                                                    Internal Table & Work areas
+
+Internal Table - Temperory storage on the application Layer.( Can store any number of records at run time)
+Work area -      Temperory storage on the application Layer.( Only one record at run time)
+
+
+
+                                                        OPEN SQL & NATIVE SQL
+OPEN SQL -> Database Independent.
+Native SQL -> Database Dependent.
+
+
+
+
+                                                      Types of Internal Table
+
+
+1) Standard Internal table -> Simplest Internal table(based upon Linear Search - Sequential Search).
+
+2) Sorted Internal table -> Binary Search( It will search for middle element, in the upper half the values will be less than the middle element, 
+                                           In the lower half the values will be greater than the middle element).
+3) Hashed Internal table -> Hash function( Hashing-  It will directly return the address of the record)
+
+
+
+                                                         Categories of Internal table
+
+1) Internal table with header line -> Implicit(Internal) work area. SAP will automatically create the work area.
+                                      Work area name is same as that of internal table.
+                                      Obsolete now
+
+  As work area name is same as that of internal table, So clear and REFRESH have differnet meaning in Internal table with HEADER LINE.
+
+  CLEAR - It will clear the work area.
+  REFRESH - It will clear the contents of Internal table.
+
+
+2) Internal table without header line-> Explicit( External) work area. 
+                                       We are explicitly specifying the work area.
+
+ As work area name is differnet from Intenal table name, so both CLEAR and REFRESH is used to clear the contents of Intenal table.
+
+ CLEAR, REFRESH - It will clear the contents of Internal table.
+ CLEAR - It will clear the work area.
+
+                                                        System Variable( SY-SUBRC, SY-TABIX , SY-DATUM)
+SY-SUBRC - It is SAP system variable 
+RC( reurun code)
+SY-SUBRC = 0 (Successful)
+SY-SUBRC <> 0 ( Unsuccessful)
+
+SY-TABIX -> It is a system variable . It retruns the current line index inside a loop.
+
+SY-DATUM - system variable for current date.( Internal format - YYYYMMDD)
+
+
+
+                                                         Loop and Loop commands.
+
+DO -> Unconditional Loop.
+WHILE -> Conditional Loop.
+LOOP-> For the Internal table.
+EXIT-> is used to exit from the loop.
+CONTINUE -> will skip the current processing of the record and then process the next record in the LOOP statement.
+CHECK -> We can use Inside a loop and outside a loop. 
+         Inside a loop - If the check condtion is not true, loop will skip the current loop pass and move to next loop pass.
+         Outside a loop - If the statement CHECK is used outside a loop and condtion is false, this statement exits the current processing block. 
+
+
+                                                         If and Case Statments( Conditional statements)
+
+IF -> It is a conditional statment. mutiple statements blocks are there, depends upon the condition one block will execute.
+
+      If None of the  If and Elseif conditions are satisfied, It will go to ELSE part. 
+
+CASE - It is also a conditional statment. mutiple statements blocks are there, depends upon the condition one block will execute.
+
+      If none of the condition is satisfied, It will fo to OTHERS part.  
+
+
+Important Point:( Difference between Case and IF from Performance Perspective )
+
+Case is always much more efficent ....because while you are using ELSEIF condtion ...it will check all the condition ...untill it will get get a true condtion ...
+
+while you are using case...it will only go to the true condtion
+
+
+
+
+                                                    Best Coding Practises
+
+1) Never Use * , Make a structure of those columns which are required in the output.
+2) Fetching sequence should be same as that of structure sequence, otherwise type mismatch or wrong output will be there.
+3) Fetching sequence should be same as that of Data Dictionary sequence.
+4) Where condition sequence should be same as that of Data Dictionary sequence.
+5) Never use corresponding keyword.
+6) Use Binary Search in Read table.
+7) For Fetching data from Foreign key tables/depenedent tables - check for SY-SUBRC condition.
+8) Use Paraller cursor in Nested loops.
+
+
+Paraller Cursor -> It's purpose is to achieve performance in case of nested loops.
+
+
+                                                             INCLUDE PROGRAM
+
+INCLUDE Program -> We can create with the help of SE38 transaction code. It is not an executeable program. We can reuse Include program.
+
+Way to Reuse :  INCLUDE ( Include progrm name). 
+
+Example :  Suppose Include program name is ZINCLUDE.
+           INCLUDE ZINCLUDE. 
+
+
+                                                    Function Module
+
+
+Function Module -> It is a reuseable component. We will create only once and we can use at several places. It is an example of Modularization technique.
+
+Transaction code : SE37
+
+Function Group -> It is container for the function modules.
+
+Transaction Code : SE80
+
+Various tabs in Function Modules
+
+Attributes - It provides the generic infomation about the Function Module.( Date, User name, Function group name , Package name).
+Import - Input
+Export - Output
+Changing - Input/ Output.
+Exceptions - It's purpose is to raise the exception/Error.
+Source Code - It's purpose it to write the logic.
+
+Ways to Declare Internal tables and Work areas
+
+DATA : LT_DATA TYPE TABLE OF ( Local Structure ).
+DATA : LT_DATA TYPE TABLE OF ( Global Structure ).
+DATA : LT_DATA TYPE (TABLE TYPE).
+
+
+                                                          SUBROUTINES
+
+It is also an Modularization technique. There is no seperate transaction code( ABAP workbench tool) to create a Subroutine.
+
+Syntax :  PERFORM ( PERFORM NAME) TABLES USING CHANGING.
+
+We can not change the sequence of TABLES USING CHANGING, but If one is not required , We can skip it.
+
+Example - If Tables is not required , then we can use USING CHANGING. 
+
+How to reuse a Sub routine :
+
+PERFORM ( PERFORM NAME) IN PROGRAM ( PROGRAM NAME) TABLES USING CHANGING IF FOUND.
+
+
+ 
+Q-1 : Difference between Include program and Function Module.
+
+Answer : Include Program does not have any Interface( No Input/Output Provison), But the Function module has a Interface.( Input/ output provison with 
+                                                                                                                           the help of Import/Export tabs).
+
+
+Q-2 : Difference between Include program and Sub routine.
+
+Answer : Include Program does not have any Interface( No Input/Output Provison), But the Subroutine has a Interface.( Tables, Using, Changing)
+
+
+Q-3 : Difference between Function module and Subroutines.
+
+Answer : Function Module : There is a Seperate transaction code SE37 ( Workbench tool) to create a Function module.
+         Subroutines : There is no seperate workbench tool to create a Subroutine.
+
+        Function MOdule : We can check the output of Function module using  F8.( We can independently run a Function module to check the output)
+        Subroutines : We can not run a subroutine independently.
+
+        Function Module : There is an Exception tab to raise the exception.
+        Sub routines : There is no exception tab.
+
+
+
+                                                 Internal Table Operations
+
+SORT -> Is to sort the internal table.If we are not specifying anything, then by default It will sort in the ascending order.
+        If we want to sort in descending order, then we need to specify the keyword descending.
+  
+LOOP -> To read the records one by one from the Internal table.
+READ TABLE-> It will read the first matching record from the Internal Table.
+APPEND -> Which Inserts data to internal table.
+DESCRIBE TABLE -> It will retrun the number of records in the internal table.
+
+Syntax : DESCRIBE TABLE (name of the internal table) LINES ( varibale name ) . 
+
+COLLECT -> It will make sum of amount values, based upon unique character values.
+
+Example : 
+Company name       Department          Amount
+Capgemini           HR                 10000
+Capgemini           Admin              20000
+Capgemini           Training           10000
+Capgemini           Admin              10000
+Capgemini           HR                 20000
+
+Company name       Department          Amount
+Capgemini           HR                 30000
+Capgemini           Admin              30000
+Capgemini           Training           10000 
+
+
+Control Break Events/Contol break structures/Control break statements : 
+
+Events : Always trigger at some specfic action.
+
+Pre-requisities : 1) Interal table should be in the sorted order.
+                  2) Control break events should be applied inside a loop.
+
+AT FIRST -> It will trigger for the first iteration of the Internal table.
+AT LAST -> It will trigger for the last ireration of Internal table.
+AT NEW <FIELDNAME> -> Statements will execute for a group of records, having the same value for field name, but for the first time.
+AT END OF <FIELDNAME> -> Statements will execute for a group of records, having the same value for field name, but for the last time.
+
+IS NOT INITIAL -> IS NOT NULL, IS NOT BLANK.
+IS INITIAL -> IS NULL, IS BLANK.
+
+
+                                             Transaction Code
+
+Transaction Code : SE93( Create customer specific transaction codes)
+The screen number of Selection screen is 1000.
+
+Transaction code for Program and Selection screen.
+Trasaction code for tables.
+
+                                             Message class 
+
+
+Messages always plays an Important role for End user.
+Error( E) 
+Warning/Information-> I
+Success -> S
+
+
+Transaction code for Message Class = SE91.
+
+A message number is 3 characters long.( 000-999)
+
+Syntax : 
+
+MESSAGE E000(ZMSG_88).  
+Where 
+Message = Pre-defined keyword.
+E =  Message Type
+000 =  Message Number
+ZMSG_88 = Message Class.
+      
+
+Q-1 : How to pass values to a message number?
+
+Answer : & -> Operator which is used to pass values to a message number.
+
+Q-2 : How many & can be passed to message number?
+
+Answer : 4.
+
+
+
+
+                                                             Debugging
+
+
+Debugging - 1) Debugging is a technique by which we can find the error, Correct the error and detect the error.
+            2) SAP Debugger is a part of ABAP workbench only.
+
+Ways of Debugging - 1) Put the breakpoint on any executeable statement and program will automtically stop at that point.
+                    2) We can debug the code with the help of transaction code /h.
+
+Execution Keys -  1) F5 - Step by Step Execution
+                  2) F6- Line by line Execution
+                  3) F7 - Return
+                  4) F8 - Continuous Execution or Exit.
+
+
+Various Features in Debugging Mode -> 1) Change the contents of selected rows.
+                                      2) Delete Selected rows.
+                                      3) Delete all rows( Delete complete table)
+                                      4) Append Row
+
+Backtracking( To debug the previous lines og logic) -> Path : Debugger - Go to statement( Shift + F12).
+
+Variables in Debugging Mode - SY-SUBRC , SY-TABIX
+
+Put the Breakpoint on Keywords in Debugging Mode- Example - SELECT, CALL FUNCTION , MESSAGE
+
+Deleting and deactivating breakpoints -> Deleting - Permanently deleting the breakpoints
+                                         Deactivating - Temerory deleting the break-points in that particular session.
+                                                        When the program again runs, the breakpoints will be there.
+
+Watch-points -> To monitor the values of variables and Internal tables.
+
+Break-points limit = 30
+Watch point limit = 10
+
+Static and Dynamic break-point -> 
+
+Static break-points -> User Independent break-points
+
+Syntax : BREAK-POINT
+
+Dynamic break-point : User dependent break-point.
+
+Syntax : BREAK User name.
+
+
+
+                                                            String Operations
+
+1) CONCATENATE -> The Purpose of CONCATENATE is to CONCATENATE the Strings.
+Syntax : CONCATENATE ( Variable 1) ( Varibale 2) ( Variable 3) INTO ( Final Variable) SEPERATED BY 'Seperator'.
+Example - CONCATENATE lv_data1 lv_data2 lv_data3 INTO lv_final SEPERATED BY '.'.
+
+2) SPLIT -> It's purpose is to SPLIT the string.
+Pre-requisite -> Seperator must be there.
+Syntax : SPLIT ( Final Variable) AT ( Seperator) INTO variable1 variable2 -------.e
+Example - SPLIT lv_final AT '.' INTO lv_data1 lv_data2 lv_data3.
+
+3) CONDENSE-> Used to remove the leading and trailing spaces.
+
+  A blank at the end of a line is a trailing space.
+
+4) CONDENSE NO-GAPS -> Used to remove the leading space , trailing space and spaces between the individual strings also.
+
+5) FIND -> FIND statement is used for finding occurrences of a pattern within a string.
+
+6) STRLEN -> Used to find the length of the string.
+
+7) TRANSLATE -> The TRANSLATE statement converts characters into upper or lower case.
+
+8) SHIFT -> This command is used to shift the contents of a string. It shifts a string by a given number of places.
+            Syntax : shift s_field [ by n places ] <mode>( By default mode is LEFT)
+            Example : SHIFT lv_data BY 5 places LEFT/RIGHT/CIRCULAR.
+
+
+
+                                                                 Lock Objects
+
+Locking -> If mutiple users want to change the data at the same time , then at a time only one user can change the data.
+
+Lock object name should start with E.( EZ or EY).
+
+While creating a Lock Object, SAP automatically crate 2 FM's. 
+
+ENQUEUE_Lock Object name -> For Locking.
+DEQUEUE_Lock Object name -> For Unlocking.
+
+Lock Modes : 1) Read Lock( Shared Lock , S) - Others user can view the data, but can not changed the data.
+             2) Write Lock( Exclusive lock , E) - Others user can not view the data and can not changed the data.
+             3) Enhanced Wr‪ite Lock( Exclusive lock without cumulation) - Others user can not view the data and can not changed the data + 
+                                                                          It protect the further access for the same transaction.
+
+
+SM12 -> To see the lock entries.
+
+
+                                                   MAIN Tables for Different Modules of SAP
+
+1) SAP SD -> Sales Order - VBAK( Sales Document Header) , VBAK( Sales document Item) 
+             Invoice -     VBRK(Invoice Header), VBRK( Invoice Item) 
+
+2) SAP MM -> Material Master -> MARA( Material data) , MAKT( Material Description)
+
+3) SAP FI -> Accounting Document -> BKPF( Accounting document header) , BSEG( Accouting document item)
+
+
+
+
+                                                      Classical Report Events
+
+The program in which we are displaying the output with the help of WRITE statement is called as classical report.
+
+1) Initialization - This events calls before displaying the selection screen/Input screen.
+                     It's purpose is to assign  the default values to Parameters and Select-options.
+
+2) AT Selection Screen -> This events calls when user performs some action( Enter, F4 etc) on to the selection screen.
+                          It's purpose is to validate the Input.
+
+3) START-OF-SELECTION -> This events calls when user clicks execute button on the selection screen.
+                         The selection logic is the part of this event.
+
+4) END-OF-SELECTION -> This Event calls when selection process ends.( Call after End of data/Records).
+
+5) TOP-OF-PAGE -> The purpose of this event is to provide title/header at the begining of a new page.
+
+6) END-OF-PAGE -> The pupose of this event is to provide footer or some information at the end of a page.
+   Pre-requisite : We need to provide LINE-COUNT.
+   Example - LINE-COUNT 5(2)  -> It means end of page event will trigger after 3 lines of data and 2 lines are reserved for the footer.( Total : 3+2 = 5).
+
+
+PF-STATUS -> Personal Functions( We can create our own functions).
+
+The syntax to create own personal function( PF-STATUS) -> SET PF-STATUS 'STAT'.( STAT is the name of PF-status)
+
+Interactive classical Report Events : 
+
+1) AT USER-COMMAND -> When user clicks on the button created by PF-status, at that time AT USER-COMMAND Event is triggering.
+   system variable for User command -> SY-UCOMM.
+
+2) AT LINE-SELECTION-> When user double clicks on the line or select a line and press F2, at that time AT LINE-SELECTION event will trigger.
+
+    SY-LISEL - It is a system variable which returns the Contents of the selected line.
+   
+
+Q-1 : If we are not specifying any event, then by default which event is calling?
+Answer : START-OF-SELECTION.
+
+Q-2: What are the four areas of a screen?
+Answer : Menu Bar, Function Keys, Title Bar, Application Tool bar.
+
+Q-3 : How many basic list are there in classical repoting?
+Answer : 1.
+
+Q-4 : How many secondary list are there in classical repoting?
+Answer : 20.
+
+Q-5: Will AT USER COMMAND and AT LINE SELECTION can work simultaneously in one program?
+Answer : Yes, You need to Put - PICK for F2, in Recommended Function key settings.
+
+
+
+
+
+q1																																																																																		
+
+       
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+                          
+  
+ 
+
+
+
+   
+ 
+
+       
+
+   
+
+
