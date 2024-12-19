@@ -1,0 +1,568 @@
+Data Migration Techniques ->
+ 
+1) BDC( Batch Data communication) - From Non-SAP to SAP.
+2) LSMW( Legacy System Migration Workbench) -> From Non-SAP to SAP.
+3) IDOC( Intermediate documents) -> From Non-SAP to SAP
+                                    From SAP to Non-SAP
+                                    From SAP to SAP     
+
+The system other than the SAP system is called as non-SAP system or Legacy system.
+
+Inbound -> If the data is coming in to SAP system.
+Outbound -> If the data is going out from the SAP system.
+      
+
+                         
+
+                                     BDC( Batch Data Communication)
+
+The purpose of BDC is to transfer data from non-SAP( Legacy) system to SAP system. 
+
+
+Transaction code for Recording : SHDB
+
+Precautions for Recording : 
+
+a) Never Use F4 & F1 help.
+b) Do not pass wrong values.
+
+
+BDC Methods -> There are 3 methods for BDC.
+
+1) Session Method
+
+2) Call Transaction Method
+
+3) Direct Input Method.
+
+Session Method and call transaction are called as Batch Input methods.
+
+
+1) Session Method -> Use Function Modules - BDC_OPEN_GROUP , BDC_INSERT, BDC_CLOSE_GROUP
+
+   Run the Session with the help of transaction code : SM35.
+
+   Processing Modes : Foreground , Display Errors only, Background.
+
+Question : What is the significance of KEEP parameter in BDC_OPEN_GROUP?
+
+Answer : Indicator to keep processed sessions.( Keep = 'X' - Processed sessions will remain in SM35 , KEEP = ' '( Processed session will not be available ) ).
+
+HOLDDATE -> To lock a session for a specified date.
+
+
+
+2) Call Transaction Method -> 
+
+   Call transaction 'Transaction Code' USING ( BDC Internal table) MODE 'A or N or E' UPDATE 'A or S or L' 
+  Messages INTO ( Internal table).
+   
+   Example : Call transaction 'MM01' USING LT_BDCDATA MODE 'A' UPDATE 'S' Messages INTO LT_MESSTAB.  
+
+
+   MODE -> 
+   A -> All screen( It will show screen by screen processing)
+   N -> No Screen( It will not show any screen, directly we will get a output).
+   E -> Error( If there is a Error in BDC - It will show the screen where the error is, If there is no Error - It will not show any screen )
+           
+
+  UPDATE ->
+  
+  A -> Asynchoronous( COMMIT WORK)
+  The called transaction does not wait for any updates to be completed.
+  Results in faster execution of the data transfer program.
+
+
+  S -> Synchronous( Sync between the sender and receiver , COMMIT WORK AND WAIT)
+  
+  The called transaction waits for any updates that it produces to be completed.
+  Execution is slower than with asynchronous updating because called
+  transactions wait for updating to be completed. 
+   
+
+
+  L -> Local Update 
+  If the data is updated locally, the update of the database will not be processed
+  in a separate process, but in the process of the calling program.
+  
+
+3) Direct Input Method -> Direct Inputs are standard SAP programs to post the data in to SAP.
+Examples for direct input programs are:
+
+RFBIBL00 - FI( Finance)
+RMDATIND - MM( Material Management)
+RVAFSS00 - SD
+RAALTD11 - AM
+RKEVEXTO - CO-PA
+
+
+
+Q-1 : Difference between call transaction method and batch input method.
+
+Answer : https://www.saponlinetutorials.com/call-transaction-batch-input-session-method-differences/
+
+Q-2: Difference between Batch Input Methods( Call Transaction, Session) and Direct Input Method.
+
+Answer : Batch Input : The consistency checks are executed with help of the screens.
+                       This technique create sessions.
+                       This Method is slow as compared to Direct Input Method. 
+
+         Direct Input : The consistency checks are executed with the help of Function modules. 
+                        This technique does not create any sessions.
+                        This Method is fast as compared to batch Input Method. 
+                        This method update database tables directly.
+                        This method is used to process large amount of data.
+
+
+
+VA01 -> To Create Sales Order.
+VA02 -> To change the Sales Order.
+VA03 -> To Display the Sales order.
+
+Tables : VBAK , VBAP
+
+MM01 -> To Create Material.
+Mm02-> To Change Material.
+MM03-> To display material.
+
+Tables : MARA, MAKT
+                         
+
+
+                                                   Smartforms
+
+Smartforms are layouts in SAP.
+
+Transaction code : Smartforms
+
+Form Attributes : Generic Information of Smartform( Date, Time, Package etc.)
+Form Interface : It's purpose is to pass Input and output parameters.
+Global Definition :  Global data, Types, Field-symbols, Initialization, Form routines, Currency/Quant. Fields.
+
+
+Template -> Tempate is used for fixed number of rows and columns.
+
+Table ->  When number of rows are not fixed, Table is preferable.
+
+We can say Template is for static data and Table is for dynamic data.
+
+Parts of Table : 
+
+Header
+Main area
+Footer
+
+
+Types of Windows: 
+
+Main Window: It is used for the continues output such as table output
+Secondary Window: It is used for output with a fixed length
+Copy Window: It is also a kind of special secondary window which is used for making pages as copy or original
+Final Window: It is a kind of special secondary window used for details which are needed to be processed only at the end of processing form.
+
+
+Types of Text : 
+
+Text Element - Not a reuseable text. Dedicated to one smartform only.
+
+Text Module : It is a reuseable text. It is a reuseable text for smartforms.
+
+Include Text : It is a also reuseable text. It is a reuseable text for smartforms, programs etc.
+Transaction code for Include text : SO10
+Function Module to display Include Text : READ_TEXT
+
+Dynamic Text : This text is used to display the text at run time in smartform.( Pre- defined table type - TSFTEXT)
+
+
+
+Ways to Debug a Smartform:
+
+Put the BREAK-POINT  or Break Username in the smartform.
+
+Put the session break point in the generated function module of the smartform.
+
+               
+Important Points :
+
+1) Every Smartform on execution generates Function module.
+
+2) SAP function module to return the Function module of a Smartform:  SSF_FUNCTION_MODULE_NAME
+
+3) Transaction code to upload graphics in SAP : SE78
+
+4) SAP Supports which types of Images : BMP( Bitmap)
+
+5) Format of Smartfrom upload/download : XML
+
+6) System variable for Current page number : SFSY-PAGE
+
+7) System variable for total page number :  SFSY-FORMPAGES
+
+8) System variable for copy count : SFSY-COPYCOUNT
+
+9) Transaction code for Smartstyle : Smartstyles.
+
+10) Transaction code for Bar code : SE73.
+
+11) How to assign a bar code in the smartform : With the help of character format.
+
+12) Transaction code for the mapping of output type, Smartform and driver program : NACE.
+
+13) Table for the mapping of output type, Smartform and driver program : TNAPR.
+
+
+Question : Can I run a smartform without main window.
+
+Answer :  Yes.
+
+Question : What is a Pre-printed Smartform?
+
+Answer : Preprinted Smartforms means that We are going to take output of the smartforms in a printed stationary.
+
+Link for Copies Window : http://www.saptechnical.com/Tutorials/Smartforms/Copies/Window.htm
+
+Link for Total using Calculation Tab : http://mysanjib.blogspot.com/2013/09/sum-in-footer-of-smartforms.html
+
+Link for Final Window : http://saptechnical.com/Tutorials/Smartforms/Final/Index.htm
+
+
+
+                                                            Adobe Forms
+
+Transaction code for Adobe forms : SFP
+
+Difference between Adobe forms and Smartforms.
+
+1) Smartforms are not interactive forms. Adobe forms are Interactive Smartforms.
+2) In Smartforms - the form Interface , Global definitions, Pages, Windows are all together.
+   In Adobe forms - The form Interface, Global definition are the part of Interface.
+                    We design the layout seperately in a form.
+   The Interface can be used in several number of Adobe forms. 
+
+
+
+Types of Interface in Adobe forms :  1) ABAP Dictionary based Interface.
+                                     2) XML schema based interface.
+                                     3) Smartform compatible interface.
+
+Types of Layout in Adobe Forms : 1) Standard Layout.
+                                 2) ZCI Layout
+                                 3) xACF Layout
+                                 4) Unknown Layout Type
+
+What are the system variables available in context tab of Adobe form?
+
+DATE( SFPSY-DATE)
+TIME( SFPSY-TIME)
+USERNAME( SFPSY-USERNAME)
+SUBRC( SFPSY-SUBRC)
+
+In Which view we are desiging the layout in Adobe forms?
+
+Design View.
+
+In which view the data is available?
+
+Data View.
+
+What is the path to reset the pallets?
+
+Pallettes->Workspace->Reset Pallettes Locations.
+
+
+What is the pre-requisite to display a Image in output of Adobe forms?
+
+Answer : Select the checkbox - Embed Image data in the Object.
+
+
+How to display a date in a specific format in Adobe forms?
+
+Answer : Drag and drop the Date/Time Field from Library pallet into Layout. Right click on it -> Go to Palletes -> select Object -> go to the Field tab ->
+
+In Display Pattern you simply specify the date format as DD.MM.YYYY and the active it and test it.
+
+
+
+Function modules used in Adobe forms
+
+1) FP_JOB_OPEN
+2) FP_FUNCTION_MODULE_NAME
+3) FP_JOB_CLOSE
+
+
+Master Page
+
+Every form design contains at least one master page that Adobe LiveCycle Designer creates automatically. 
+Master pages are responsible for formatting body pages. 
+They help to facilitate design consistency 
+because they can provide a background and layout format for more than one of the body pages in a form design.
+
+
+Body pages
+
+Body pages represent the pages of a form. Each body page derives its page size and orientation from a master page, and by default, 
+each body page is associated with the default master page that LiveCycle Designer creates.
+Each body page is created with a default subform that covers the whole page.
+
+Important Points :
+
+To Shift data to next page - choose the page as flowed.
+
+Scripting languages of Adobe forms :
+
+Formcalc.
+Javascript.
+
+
+Link : https://blogs.sap.com/2019/07/22/common-errors-and-difficulties-faced-in-adobe-forms-beginners/
+
+                                                  Enhancements & Modifications
+
+Enhancements - We will enhance the SAP functionality in Customer namespace( Z or Y).
+Modifications - We will enhance the SAP functionality in SAP namespace( Name should not start with Z or Y).
+
+
+
+Types of Enhancements & Modifications 
+
+1) Implicit & Explicit Enhancements -  Enhancement
+2) Customer Exit( Function Module Exit , Menu Exit, Screen Exit) - Enhancement
+3) BADI( Business Addin's) - Enhancements
+4) User Exit - Modification
+
+1) Implicit & Explicit Enhancements
+
+Implict Enhancement - Implicit point is available at the starting or at the last of the program , Sub routines, Function modules etc.
+                      We will create the Implicit Implementation using those points.
+
+Explict Enhancement - Explicit point & Section are available at any point. We will create the Explicit implementations using those points and sections.
+
+Enhancement-point -- You can only add additional codes, you cannot change or replace the existing code.
+                     1. It will not give default implementation.
+                     2. Along with standard code your implementation also executed
+                     3. You can only add additional codes, you cannot replace the existing code
+                       
+Enhancment-section -- You can change or replace the existing SAP code.
+                     1. It will give default implementation 
+                     2. Only your implementation will execute 
+                       3. You can change or replace the existing SAP code
+
+Enhancement Spot : Enhancement spots are containers for explicit enhancement options.
+
+
+2) Customer Exit - It is also called as Function Exit.
+
+   Ways to Find a Customer Exit -      1) Put the break-point on the statment CALL CUSTOMER-FUNCTION.
+                                       2) Put the package name in SMOD transaction code( Path : Utilities - Find - Package name).
+                                       3) Go to transaction code - SE84( Path : Enhancements - Customer Exits) 
+
+
+  Steps to Implement a Customer Exit -
+
+ 1) Go to transaction code - CMOD
+ 2) Provide a project name and click create.
+ 3) Click on Enhancement assignment tab and provide the customer exit name.
+ 4) Click on Components tab - It will navigate you to function module.
+ 5) Write the logic in the Z include of that function module.
+ 6) Activate the project. 
+
+Tables & Transaction codes :
+
+1) SMOD -> To find customer Exit.
+2) CMOD -> To Implement a customer Exit.
+3) MODSAP -> To find the customer exit name by passing the function module.
+4) MODACT -> To find the project for a customer exit name.
+
+
+Relationship between a project and Customer Exit name -> 1:1
+
+
+Menu Exit -> 
+
+Menu exits add menu items to standard SAP applications.
+These special entries have function codes that begin with "+" (a plus sign) - +CUS
+
+Link for Menu Exit -> https://saptechblogspot.blogspot.com/2016/09/menu-exits.html 
+
+Screen Exit->
+
+The screen type of the screen is Subscreen.
+/l 
+Link for Screen Exit -> http://freesapabap.blogspot.com/2014/11/customer-exit-screen-exit.html
+
+
+
+                                                             User Exit.
+
+User Exit are modifications. They are only available in SAP SD( Sales & distribution) module. 
+They are available in the form of a Sub routines.
+
+Ways to find out a User Exit.
+
+1) Check the documentation of the program.
+2) Search for Key word - PERFORM USEREXIT
+3) Search in  Package : VMOD
+
+The Most Important User Exit's of SAP SD module are available in program : MV45AFZZ.
+
+
+
+
+
+
+                                                         BADI
+
+1) BADI is an Enhancement.
+2) The full form of BADI is Business ADD In's.
+3) It is based upon OOPS concepts( Interfaces & Classes).
+4) SE18 -> BADI Definition( Interface)
+5) SE19->  BADI Implementation( Classes)
+
+Types of BADI:
+
+1) Classic BADI
+2) New BADI( Kernel BADI)
+
+How to find a classic BADI ->  
+
+We can use SAP class - CL_EXITHANDLER. In this class we have the method name - GET_INSTANCE.
+
+How to find a new BADI
+
+Put the break-point on Key word - CALL BADI or GET BADI.
+
+Multiple Use -> We can create multiple Implementations.
+SAP Internal -> Only for SAP Use.
+
+              
+Link for BADI : https://www.sapnuts.com/courses/core-abap/badi-sap/real-time-of-using-badi.html
+                http://saptechnical.com/Tutorials/ExitsBADIs/VL02/page1.html
+
+
+
+
+                                                 Performance Tools.
+
+1) ST05-> Performance Trace( Activate the trace , Deactivate the trace , Display the trace).
+2) SE30-> Old Runtime analysis tool.
+3) SAT -> Runtime Analysis Tool.
+4) SCI -> SAP Code Inspector.
+5) EPC -> Extended Program Check
+6) ATC -> ABAP Test Cockpit
+
+
+                                                  Transport 
+
+Transport request : It is a mechanism to send the objects from one system to other system.
+
+Types of Systems :
+
+Development -> For Development
+Quality -> For Testing
+Production -> Live System( Customer based system)
+
+
+Transaction codes :
+
+1) SE09/SE10 -> Transport Organizer.
+2) SE01 -> Transport Organizer( Extended View)
+3) SE03 -> Transport Organizer Tools( Functions like - Adding objects to TR, Analyzing objects in TR etc.)
+4) STMS -> SAP Transport Management system.( Transport Layers are defined in STMS & we can define transport routes).
+5) STMS_IMPORT -> To Import the transport requests.
+
+Two procedures to use import Queue to perform import by BASIS team:
+
+1.Mass Transport( STMS_IMPORT) -> Import all Requests
+2.Single Transport( STMS_IMPORT) -> Import Request
+
+Transport Layer -> It is used to establish the path to move the objects.
+                   SAP is a standard transport layer used to move SAP standard objects.
+                   Z<SID> is custom layer by default available to move the development objects.
+                   Where SID = system id.
+                   A transport layer is assigned to each development class/package and thus to all the
+                   objects in that class.
+
+
+Types of Transport Request :
+1) Workbench Request :A workbench generally for things you would create in the ABAP workbench. This is primarily code or custom objects.
+                      A request for carrying out development work in the ABAP Workbench.
+2) Customizing Request: Configuration changes in SPRO , Customizing table contents.
+3) Transport of Copies : It is used to transfer the changes to the other system without releasing the main TR. After successful testing, you can release your main TR.
+                         So, you will have a single TR for all your changes. We can combine objects from multiple TR's in to a single TOC( trasnport of copies). 
+4) Relocation: You can use this request type when you want to change the development system of individual objects on a permanent basis.
+
+Status of Transport Request : 1) Modifiable
+                              2) Released
+   
+Link for Requests : http://sapbasiscrew.blogspot.com/2016/09/different-types-of-transport-requests.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                         
+
+
+
+
